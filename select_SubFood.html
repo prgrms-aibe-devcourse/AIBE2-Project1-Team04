@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>휙떠나 - 음식 고르기</title>
+
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #f0f2f8; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+        .random-pick { background: linear-gradient(90deg, #f857a6, #ff5858); color: white; padding: 20px; border-radius: 15px;
+          margin-bottom: 20px; cursor: pointer; font-weight: bold; }
+        .random-pick:hover { opacity: 0.9; }
+        .options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .option { width: 100px; height: 100px; margin: 10px; background: #fafafa; border: 1px solid #ddd; border-radius: 10px;
+          display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .option.selected { background: #5a4fd7; color: white; font-weight: bold; }
+        .button-group { margin-top: 20px; }
+        .button-group button { padding: 10px 30px; background: #a08ef4; color: white; border: none; border-radius: 10px; cursor: pointer; }
+      </style>
+      
+</head>
+<body>
+    <!-- 진행 바 -->
+    <div class="progress-bar">
+    </div>
+
+    <div class="card">
+      <h2>먹고 싶은 음식을 선택하세요</h2>
+      <div class="random-pick" onclick="randomPick()">
+        🎲 랜덤으로 선택하기
+      </div>
+      <div class="options">
+        <div class="option" onclick="toggleSelect(this, '비빔밥')">비빔밥</div>
+        <div class="option" onclick="toggleSelect(this, '불고기')">불고기</div>
+        <div class="option" onclick="toggleSelect(this, '김치찌개')">김치찌개</div>
+        <div class="option" onclick="toggleSelect(this, '된장찌개')">된장찌개</div>
+        <div class="option" onclick="toggleSelect(this, '삼겹살')">삼겹살</div>
+        <div class="option" onclick="toggleSelect(this, '냉면')">냉면</div>
+      </div>
+
+      <div class="selected-info">
+        <p>선택한 카테고리: <span id="selected-category">-</span></p>
+      </div>
+
+      <div class="button-group">
+        <button onclick="goNext()">다음</button>
+      </div>
+    </div>
+
+    <script>
+        let selectedSubFoods = [];
+
+        // 페이지 로드될 때 카테고리 표시
+        window.onload = function() {
+            const selectedCategory = localStorage.getItem('selectFoods');
+            if (selectedCategory) {
+            document.getElementById('selected-category').innerText = selectedCategory;
+            } else {
+            document.getElementById('selected-category').innerText = '선택되지 않음';
+            }
+        };
+
+        function toggleSelect(element, foodName) {
+          if (selectedSubFoods.includes(foodName)) {
+            selectedSubFoods = selectedSubFoods.filter(f => f !== foodName);
+            element.classList.remove('selected');
+          } else {
+            selectedSubFoods.push(foodName);
+            element.classList.add('selected');
+          }
+        }
+        
+        function goNext() {
+          if (selectedSubFoods.length === 0) {
+            alert('하나 이상 선택해주세요!');
+            return;
+          }
+          localStorage.setItem('selectedSubFoods', JSON.stringify(selectedSubFoods));
+        location.href = 'select_SubFood.html';
+      }
+
+    </script>
+
+</body>
+</html>
