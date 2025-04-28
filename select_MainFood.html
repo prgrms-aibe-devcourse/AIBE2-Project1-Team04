@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>휙떠나 - 음식 고르기</title>
+
+    <style>
+      /* 스타일 공통 */
+      body { font-family: 'Arial', sans-serif; background: #f0f2f8; padding: 20px; }
+      .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+      .options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+      .option { width: 100px; height: 100px; margin: 10px; background: #fafafa; border: 1px solid #ddd; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+      .option.selected { background: #5a4fd7; color: white; font-weight: bold; }
+      .button-group { margin-top: 20px; }
+      .button-group button { padding: 10px 30px; background: #a08ef4; color: white; border: none; border-radius: 10px; cursor: pointer; }
+      .selected-info { background: #eef3ff; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 14px; color: #333;  }
+      .selected-info p { margin: 0; }
+    </style>
+      
+</head>
+<body>
+    <!-- 진행 바 -->
+    <div class="progress-bar">
+    </div>
+
+    <div class="card" >
+      <h2>먹고 싶은 음식 종류를 선택하세요</h2>
+      <div class="options">
+        <div class="option" onclick="toggleSelect(this, '한식')">한식</div>
+        <div class="option" onclick="toggleSelect(this, '일식')">일식</div>
+        <div class="option" onclick="toggleSelect(this, '중식')">중식</div>
+        <div class="option" onclick="toggleSelect(this, '양식')">양식</div>
+        <div class="option" onclick="toggleSelect(this, '아시안')">아시안</div>
+        <div class="option" onclick="toggleSelect(this, '멕시칸')">멕시칸</div>
+      </div>
+      <div class="button-group">
+        <button onclick="goNext()">다음</button>
+      </div>
+    </div>
+
+    <script>
+
+      let selectFoods = [];
+
+      function toggleSelect(element, foodName){
+        if (selectFoods.includes(foodName)){
+          selectFoods = selectFoods.filter(f => f !== foodName);
+          element.classList.remove('selected');
+        }else{
+          selectFoods.push(foodName);
+          element.classList.add('selected');
+        }
+      }
+
+      function goNext(){
+        if (selectFoods.length === 0){
+          alert('하나 이상 선택해주세요!');
+          return;
+        }
+        localStorage.setItem('selectedFoods', JSON.stringify(selectFoods));
+        location.href = 'select_SubFood.html';
+      }
+
+    </script>
+
+</body>
+</html>
