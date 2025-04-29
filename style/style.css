@@ -1,0 +1,447 @@
+/* common.css - 휙떠나 공통 스타일시트 */
+
+/* ===== 기본 스타일 & 리셋 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Malgun Gothic', 'Pretendard', Arial, sans-serif;
+    background: #f4f7fc;
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* ===== 헤더 스타일 ===== */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: #fff;
+    border-bottom: 2px solid #2196f3;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-text {
+    background: linear-gradient(90deg, #4e54c8, #ec407a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .beta-badge {
+    font-size: 0.75rem;
+    background: #d1e8ff;
+    color: #2196f3;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  /* ===== 진행 상태 바 ===== */
+  .progress-container {
+    height: 4px;
+    background: #e0e0e0;
+    margin: 24px 0;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: #2196f3;
+    transition: width 0.3s ease;
+  }
+  
+  /* ===== 카드 스타일 ===== */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .content-card {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .main-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* ===== 제목 & 텍스트 스타일 ===== */
+  .section-title {
+    margin: 0;
+    text-align: center;
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(to right, #4776f6, #A366FF);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+  }
+  
+  .subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 24px;
+  }
+  
+  /* ===== 버튼 스타일 ===== */
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+  }
+  
+  .btn-primary {
+    background: #2196f3;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background: #1976d2;
+  }
+  
+  .btn-secondary {
+    background: none;
+    color: #2196f3;
+  }
+  
+  .btn-secondary:hover {
+    color: #1976d2;
+  }
+  
+  .btn-next {
+    display: block;
+    margin: 0 auto;
+    background: #2196f3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .btn-next:hover {
+    background: #1976d2;
+  }
+  
+  .btn-back {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #2196f3;
+    cursor: pointer;
+  }
+  
+  /* ===== 폼 & 입력 요소 ===== */
+  .form-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-title {
+    margin: 0 0 20px;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+  
+  /* ===== 카운터 스타일 ===== */
+  .counter-control {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .counter-btn {
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .counter-display {
+    padding: 8px 16px;
+  }
+  
+  /* ===== 정보 박스 ===== */
+  .info-box {
+    background: #e3f2fd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+  }
+  
+  .info-highlight {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  /* ===== 선택 그리드 ===== */
+  .selection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  @media (max-width: 768px) {
+    .selection-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .selection-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .selection-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .selection-option:hover {
+    border-color: #2196f3;
+  }
+  
+  .selection-option.selected {
+    background: #e3f2fd;
+    border-color: #2196f3;
+  }
+  
+  .selection-option input[type="radio"],
+  .selection-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .selection-option img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+  }
+  
+  /* ===== 결과 카드 스타일 ===== */
+  .day-card {
+    flex: 1 1 250px;
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e0e7ff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .day-card h3 {
+    margin-top: 0;
+    background: #7c3aed;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .day-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .day-card li {
+    margin-bottom: 8px;
+  }
+  
+  /* ===== 식도락 카드 스타일 ===== */
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  
+  .option {
+    width: 100px;
+    height: 100px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .option.selected {
+    background: #5a4fd7;
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* ===== 팁 박스 ===== */
+  .tip-box {
+    background: #eef2ff;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  /* ===== 버튼 그룹 ===== */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* ===== 카드 컨테이너 ===== */
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    flex: 1;
+    min-width: 250px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card-header {
+    padding: 30px 0;
+    text-align: center;
+  }
+  
+  /* 그래데이션 색상 클래스 */
+  .purple-bg { background: linear-gradient(to right, #A366FF, #D3B3FF); }
+  .blue-bg { background: linear-gradient(to right, #32A4F0, #A9DCFF); }
+  .orange-bg { background: linear-gradient(to right, #FF8833, #FFD0A6); }
+  
+  .purple-btn { background-color: #E5D6FF; color: #7B47FF; }
+  .blue-btn { background-color: #D3EEFF; color: #1E90FF; }
+  .orange-btn { background-color: #FFE3C2; color: #FF7F00; }
+
+  /* 추천 카드 (메인 3개 카드) */
+.recommend-card {
+    background: white;
+    border-radius: 12px;
+    flex: 1 1 30%;
+    min-width: 250px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  
+  /* 메인 카드 제목 */
+  .main-card h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+  }
+  
+  /* 메인 카드 본문 */
+  .main-card p {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+  
+  /* 시작 버튼 */
+  .start-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #4776f6;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+  }
+  
+  .start-btn:hover {
+    background: #3a63d2;
+  }
+  
