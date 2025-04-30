@@ -4,220 +4,211 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>휙떠나 - 맞춤 여행 추천</title>
-<<<<<<< HEAD
   <link rel="stylesheet" href="style/style.css">
   <style>
-    /* style.css */
-    
+    body {
+      margin: 0;
+      font-family: 'Pretendard', sans-serif;
+      background: linear-gradient(to bottom, #e0e7ff, #f9fafb);
+      color: #333;
+    }
 
-  body {
-    margin: 0;
-    font-family: 'Pretendard', sans-serif;
-    background: linear-gradient(to bottom, #e0e7ff, #f9fafb);
-    color: #333;
-  }
+    .top-bar {
+      background: white;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: bold;
+      color: #4f46e5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-  .top-bar {
-    background: white;
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 20px;
-    font-weight: bold;
-    color: #4f46e5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+    .top-bar button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
-  .top-bar button {
-    background: #4f46e5;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
+    .top-bar button:hover {
+      background: #4338ca;
+    }
 
-  .top-bar button:hover {
-    background: #4338ca;
-  }
+    .progress-bar-container {
+      background: #e0e7ff;
+      height: 8px;
+      width: 100%;
+    }
 
-  .progress-bar-container {
-    background: #e0e7ff;
-    height: 8px;
-    width: 100%;
-  }
+    .progress-bar {
+      height: 100%;
+      width: 75%;
+      background: linear-gradient(to right, #6366f1, #7c3aed);
+    }
 
-  .progress-bar {
-    height: 100%;
-    width: 75%;
-    background: linear-gradient(to right, #6366f1, #7c3aed);
-  }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-  .container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
+    .header {
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      color: #5b21b6;
+    }
 
-  .header {
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    color: #5b21b6;
-  }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-  .subtitle {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+    .days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
 
-  .days {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 30px;
-  }
+    .day-card {
+      flex: 1 1 250px;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-  .day-card {
-    flex: 1 1 250px;
-    background: #f9fafb;
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid #e0e7ff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+    .day-card h3 {
+      margin-top: 0;
+      background: #7c3aed;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
 
-  .day-card h3 {
-    margin-top: 0;
-    background: #7c3aed;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+    .day-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-  .day-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+    .day-card li {
+      margin-bottom: 8px;
+    }
 
-  .day-card li {
-    margin-bottom: 8px;
-  }
+    .tip-box {
+      background: #eef2ff;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
 
-  .tip-box {
-    background: #eef2ff;
-    padding: 20px;
-    border-radius: 12px;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
 
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
+    .buttons button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
 
-  .buttons button {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.3s;
-  }
-
-  .buttons button:hover {
-    background-color: #4338ca;
-  }
-    
-  </style>  
-=======
->>>>>>> origin/feature/select-days
+    .buttons button:hover {
+      background-color: #4338ca;
+    }
+  </style>
 </head>
 
-<body style="margin:0; font-family:Arial, sans-serif; background:linear-gradient(to bottom, #e0e7ff, #f9fafb); color:#333;">
+<body>
+  <!-- 헤더 -->
+  <header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
+    <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
+      <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
+      <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
+    </h1>
+    <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
+  </header>
 
-<!-- 헤더 추가 -->
-<header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
-  <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
-    <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
-    <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
-  </h1>
-  <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
-</header>
-
-<div style="height:4px; background:#e0e0e0;">
-  <div class="progress" style="width:75%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
-</div>
-
-<div style="max-width:800px; margin:40px auto; background:white; border-radius:12px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-  <div style="margin-bottom:20px; font-size:24px; font-weight:bold; text-align:center; color:#5b21b6;">맞춤 여행 일정 추천</div>
-
-  <div style="text-align:center; margin-bottom:30px;">
-    <div>서울 여행</div>
-    <small>선택한 랜드마크: 경복궁, 남산타워, 명동거리 | 선택한 음식: 비빔밥, 불고기</small>
+  <!-- 진행 바 -->
+  <div style="height:4px; background:#e0e0e0;">
+    <div class="progress" style="width:75%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
   </div>
 
-  <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-bottom:30px;">
-    <div style="flex:1 1 250px; background:#f9fafb; border-radius:12px; padding:20px; border:1px solid #e0e7ff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-      <h3 style="margin-top:0; background:#7c3aed; color:white; padding:8px 12px; border-radius:8px; font-size:16px; margin-bottom:10px; text-align:center;">Day 1</h3>
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li><strong>방문 장소:</strong> 경복궁, 북촌한옥마을</li>
-        <li><strong>추천 음식:</strong> 비빔밥</li>
-      </ul>
+  <!-- 추천 결과 영역 -->
+  <div class="container">
+    <div class="header">맞춤 여행 일정 추천</div>
+
+    <div class="subtitle">
+      <div>서울 여행</div>
+      <small>선택한 랜드마크: 경복궁, 남산타워, 명동거리 | 선택한 음식: 비빔밥, 불고기</small>
     </div>
 
-    <div style="flex:1 1 250px; background:#f9fafb; border-radius:12px; padding:20px; border:1px solid #e0e7ff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-      <h3 style="margin-top:0; background:#7c3aed; color:white; padding:8px 12px; border-radius:8px; font-size:16px; margin-bottom:10px; text-align:center;">Day 2</h3>
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li><strong>방문 장소:</strong> 남산타워, 명동</li>
-        <li><strong>추천 음식:</strong> 불고기</li>
-      </ul>
+    <div class="days">
+      <div class="day-card">
+        <h3>Day 1</h3>
+        <ul>
+          <li><strong>방문 장소:</strong> 경복궁, 북촌한옥마을</li>
+          <li><strong>추천 음식:</strong> 비빔밥</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <h3>Day 2</h3>
+        <ul>
+          <li><strong>방문 장소:</strong> 남산타워, 명동</li>
+          <li><strong>추천 음식:</strong> 불고기</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <h3>Day 3</h3>
+        <ul>
+          <li><strong>방문 장소:</strong> 한강공원, 인사동</li>
+          <li><strong>추천 음식:</strong> 전시회카페</li>
+        </ul>
+      </div>
     </div>
 
-    <div style="flex:1 1 250px; background:#f9fafb; border-radius:12px; padding:20px; border:1px solid #e0e7ff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-      <h3 style="margin-top:0; background:#7c3aed; color:white; padding:8px 12px; border-radius:8px; font-size:16px; margin-bottom:10px; text-align:center;">Day 3</h3>
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li><strong>방문 장소:</strong> 한강공원, 인사동</li>
-        <li><strong>추천 음식:</strong> 전시회카페</li>
-      </ul>
+    <div class="tip-box">
+      <p>🌟 관광지는 하루 목표치의 환경이나 날씨 상황에 맞춰 조정하세요.<br>
+         🌟 날씨가 좋은 날에 야외 방문을 추천합니다.<br>
+         🌟 추천 여행 플랜은 자유롭게 여유 있게!</p>
+    </div>
+
+    <div class="buttons">
+      <button>공유하기</button>
+      <button>일정 다시 만들기</button>
+      <button>저장하기</button>
     </div>
   </div>
 
-  <div style="background:#eef2ff; padding:20px; border-radius:12px; font-size:14px; margin-bottom:20px;">
-    <p>🌟 관광지는 하루 목표치의 환경이나 날씨 상황에 맞춰 조정하세요.<br>
-    🌟 날씨가 좋은 날에 야외 방문을 추천합니다.<br>
-    🌟 추천 여행 플랜은 자유롭게 여유 있게!</p>
-  </div>
-
-  <div style="display:flex; justify-content:center; gap:10px;">
-    <button style="background-color:#4f46e5; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px;">공유하기</button>
-    <button style="background-color:#4f46e5; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px;">일정 다시 만들기</button>
-    <button style="background-color:#4f46e5; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px;">저장하기</button>
-  </div>
-</div>
-
-<script>
-//  메인으로 버튼 클릭 시 main-home.html로 이동
-document.getElementById('btnHome').onclick = (e) => {
-  e.preventDefault();
-  window.location.href = 'main-home.html';
-};
-</script>
-
+  <script>
+    // 메인으로 이동
+    document.getElementById('btnHome').onclick = (e) => {
+      e.preventDefault();
+      window.location.href = 'main-home.html';
+    };
+  </script>
 </body>
 </html>
