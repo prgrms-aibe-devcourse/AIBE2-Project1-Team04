@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>휙떠나 - 세부 지역 선택</title>
+  <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+  <!-- 헤더 + 진행바 -->
+  <header class="header">
+    <h1 class="logo">
+      <span class="logo-text">휙떠나</span>
+      <span class="beta-badge">베타</span>
+    </h1>
+    <div class="progress-container">
+      <div class="progress-bar" style="width:75%;"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <form class="region-form">
+
+      <!-- 뒤로가기 -->
+      <div class="form-nav">
+        <button type="button" class="btn btn-back">← 이전</button>
+      </div>
+
+      <!-- 타이틀 -->
+      <h2 class="form-title" id="subregion-title">세부 지역을 선택하세요</h2>
+
+      <!-- 선택 정보 박스 -->
+      <div class="info-box">
+        <p>여행 일수: <strong id="days-info">-</strong></p>
+        <p>선택한 지역: <strong id="chosen-region">-</strong></p>
+        <p>선택한 세부 지역: <strong id="chosen-subregion">선택해주세요</strong></p>
+      </div>
+
+      <!-- 옵션 그리드 -->
+      <fieldset class="selection-grid" id="subregion-grid">
+        <legend class="visually-hidden">세부 지역 선택</legend>
+      </fieldset>
+
+      <!-- 추천 받기 버튼 -->
+      <button type="submit" class="btn btn-primary btn-next">추천 받기</button>
+
+    </form>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const BACK_BTN    = document.querySelector('.btn-back');
+      const FORM        = document.querySelector('.region-form');
+      const GRID        = document.getElementById('subregion-grid');
+      const TITLE_EL    = document.getElementById('subregion-title');
+      const DAYS_EL     = document.getElementById('days-info');
+      const CHOSEN_REG  = document.getElementById('chosen-region');
+      const CHOSEN_SUB  = document.getElementById('chosen-subregion');
+
+      // 1) 여행 일수 읽어서 표시
+      const days = localStorage.getItem('selectedDays');
+      DAYS_EL.textContent = days ? `${days}일` : '-';
+
+      // 2) 상위 region 정보 읽어오기
+      const regionCode = localStorage.getItem('selectedRegion');
+      const regionName = localStorage.getItem('selectedRegionName');
+      CHOSEN_REG.textContent = regionName || '-';
+      TITLE_EL.textContent   = `${regionName || '여행 지역'}에서 가고 싶은 곳을 선택하세요`;
+
+      // 3) 세부 지역 매핑
+      const subregions = {
+        'gapyeong-yangpyeong': [
+          { value: 'namiseom',      label: '남이섬' },
+          { value: 'jaraseom',      label: '자라섬' },
+          { value: 'dumoolmeori',   label: '두물머리' },
+          { value: 'petitfrance',   label: '쁘띠프랑스' },
+          { value: 'others',        label: '그 외' }
+        ],
+        'gangneung-sokcho': [
+          { value: 'gyeongpodae',    label: '경포대' },
+          { value: 'jeongdongjin',   label: '정동진' },
+          { value: 'jumunjin',       label: '주문진' },
+          { value: 'sokcho_beach',   label: '속초해수욕장' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'gyeongju': [
+          { value: 'bulguksa',       label: '불국사' },
+          { value: 'seokguram',      label: '석굴암' },
+          { value: 'cheomseongdae',  label: '첨성대' },
+          { value: 'anapji',         label: '안압지' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'busan': [
+          { value: 'haeundae',       label: '해운대' },
+          { value: 'gwangalli',      label: '광안리' },
+          { value: 'gamcheon',       label: '감천문화마을' },
+          { value: 'taejongdae',     label: '태종대' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'yeosu': [
+          { value: 'dolsan_bridge',  label: '돌산대교' },
+          { value: 'odongdo',        label: '오동도' },
+          { value: 'hyangilam',      label: '향일암' },
+          { value: 'cablecar',       label: '해상케이블카' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'incheon': [
+          { value: 'chinatown',      label: '차이나타운' },
+          { value: 'songdo_park',    label: '송도 센트럴파크' },
+          { value: 'wolmi_park',     label: '월미도' },
+          { value: 'sorae_port',     label: '소래포구' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'jeju': [
+          { value: 'seongsan',       label: '성산일출봉' },
+          { value: 'hallasan',       label: '한라산' },
+          { value: 'manjanggul',     label: '만장굴' },
+          { value: 'cheonjiyeon',    label: '천지연폭포' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'chuncheon-hongcheon': [
+          { value: 'soyangg_dam',    label: '소양강댐' },
+          { value: 'namiseom',       label: '남이섬' },
+          { value: 'ani_museum',     label: '애니메이션박물관' },
+          { value: 'hongcheon_river',label: '홍천강변' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'taean': [
+          { value: 'mallipo',        label: '만리포해수욕장' },
+          { value: 'anmyeondo',      label: '안면도' },
+          { value: 'solhyanggi',     label: '솔향기길' },
+          { value: 'cheongsan',      label: '청산수목원' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'tongyeong-geoje-namhae': [
+          { value: 'tongyeong_cable',label: '통영케이블카' },
+          { value: 'oedo',           label: '외도' },
+          { value: 'german_village', label: '남해독일마을' },
+          { value: 'central_market', label: '통영중앙시장' },
+          { value: 'others',         label: '그 외' }
+        ],
+        'pohang-andong': [
+          { value: 'homigot',        label: '호미곶' },
+          { value: 'pohang_canals',  label: '포항운하' },
+          { value: 'hahoemaeul',     label: '하회마을' },
+          { value: 'bongjeongsa',    label: '봉정사' },
+          { value: 'others',         label: '그 외' }
+        ]
+      };
+
+      // 4) 그리드에 옵션 생성
+      (subregions[regionCode] || []).forEach(({ value, label }) => {
+        const lbl = document.createElement('label');
+        lbl.className = 'selection-option';
+        lbl.innerHTML = `
+          <input type="radio" name="subregion" value="${value}">
+          <span>${label}</span>
+        `;
+        GRID.appendChild(lbl);
+      });
+
+      // 5) 선택 시 UI 업데이트
+      GRID.addEventListener('change', e => {
+        if (e.target.name === 'subregion') {
+          CHOSEN_SUB.textContent = e.target.closest('label').querySelector('span').textContent;
+        }
+      });
+
+      // 뒤로가기
+      BACK_BTN.addEventListener('click', e => {
+        e.preventDefault();
+        history.back();
+      });
+
+      // 제출 → 결과 페이지로 이동
+      FORM.addEventListener('submit', e => {
+        e.preventDefault();
+        const sel = FORM.querySelector('input[name="subregion"]:checked');
+        if (!sel) {
+          alert('먼저 세부 지역을 선택해주세요!');
+          return;
+        }
+        localStorage.setItem('selectedSubregion', sel.value);
+        localStorage.setItem('selectedSubregionName',
+          sel.closest('label').querySelector('span').textContent
+        );
+        location.href = 'result.html';
+      });
+    });
+  </script>
+
+</body>
+</html>
