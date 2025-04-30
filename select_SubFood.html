@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="config/apiKey.js"></script>
     <title>휙떠나 - 음식 고르기</title>
 
     <style>
@@ -30,13 +31,14 @@
       <div class="random-pick" onclick="randomPick()">
         🎲 랜덤으로 선택하기
       </div>
-      <div class="options">
-        <div class="option" onclick="toggleSelect(this, '비빔밥')">비빔밥</div>
+      <div class="options" id="options-container">
+         <!-- <div class="option" onclick="toggleSelect(this, '비빔밥')">비빔밥</div>
         <div class="option" onclick="toggleSelect(this, '불고기')">불고기</div>
         <div class="option" onclick="toggleSelect(this, '김치찌개')">김치찌개</div>
         <div class="option" onclick="toggleSelect(this, '된장찌개')">된장찌개</div>
         <div class="option" onclick="toggleSelect(this, '삼겹살')">삼겹살</div>
-        <div class="option" onclick="toggleSelect(this, '냉면')">냉면</div>
+        <div class="option" onclick="toggleSelect(this, '냉면')">냉면</div> -->
+
       </div>
 
       <div id="selected-info" class="selected-info">
@@ -50,19 +52,65 @@
       </div>
     </div>
 
+
     <script>
         let selectedFoods = [];
+        const apiKey = SPOON_API_KEY;
+        console.log("SPOON_API_KEY:", apiKey);
+        let selectFoodCategory;
 
         // 페이지 로드될 때 카테고리 표시
         window.onload = function() {
-            const selectFoodCategory = JSON.parse(localStorage.getItem('selectFoodCategory'));
+            selectFoodCategory = JSON.parse(localStorage.getItem('selectFoodCategory'));
 
             if (selectFoodCategory) {
             document.getElementById('category-text').innerText = `${selectFoodCategory}`;
+            fetchFoods(selectFoodCategory);
             } else {
             document.getElementById('category-text').innerText = '선택되지 않음';
             }
         };
+
+        // 음식 불러오기 
+        async function fetchFoods(selectFoodCategory){
+          const categoryMap = {
+            "한식": "korean",
+            "일식": "japanese",
+            "중식": "chinese",
+            "양식": "western",
+            "아시안": "asian"
+          };
+
+          const englishCategory = categoryMap[selectFoodCategory] || selectFoodCategory;
+          
+          const url = `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(englishCategory)}&number=6&apiKey=${apiKey}`;
+
+          try{
+            const res = await fetch(url);
+            const data = await res.json();
+            const foods = data.results;
+
+            if (!Array.isArray(foods) || foods.length === 0) {
+              console.warn("음식 결과가 없습니다. 응답:", data);
+              alert("검색된 음식이 없습니다. 다른 카테고리를 선택해보세요.");
+              return;
+            }
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; // 기존 요소 비우기
+
+            foods.forEach(food => {
+              const div = document.createElement('div');
+              div.className = 'option';
+              div.textContent = food.title;
+              div.onclick = () => toggleSelect(div, food.title);
+              optionsContainer.appendChild(div);
+            });
+          } catch (error){
+            console.error('음식 데이터를 불러오는 중 오류 발생 : ', error);
+            alert('음식 정보를 불러오지 못했습니다.');
+          }
+        }
 
         function toggleSelect(element, foodName) {
           if (selectedFoods.includes(foodName)) {
