@@ -1,87 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>휙떠나 - 음식 고르기</title>
     <link rel="stylesheet" href="style/style.css">
+=======
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>휙떠나 - 음식 고르기</title>
+>>>>>>> origin/feature/select-days
 
-    <style>
-        body { font-family: 'Arial', sans-serif; background: #f0f2f8; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
-        .random-pick { background: linear-gradient(90deg, #f857a6, #ff5858); color: white; padding: 20px; border-radius: 15px;
-          margin-bottom: 20px; cursor: pointer; font-weight: bold; }
-        .random-pick:hover { opacity: 0.9; }
-        .options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-        .option { width: 100px; height: 100px; margin: 10px; background: #fafafa; border: 1px solid #ddd; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .option.selected { background: #5a4fd7; color: white; font-weight: bold; }
-        .button-group { margin-top: 20px; }
-        .button-group button { padding: 10px 30px; background: #a08ef4; color: white; border: none; border-radius: 10px; cursor: pointer; }
-      </style>
-      
+  <style>
+    body { font-family: 'Arial', sans-serif; background: #f0f2f8; padding: 20px; margin:0; }
+    .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; margin-top: 40px; }
+    .random-pick { background: linear-gradient(90deg, #f857a6, #ff5858); color: white; padding: 20px; border-radius: 15px;
+      margin-bottom: 20px; cursor: pointer; font-weight: bold; }
+    .random-pick:hover { opacity: 0.9; }
+    .options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+    .option { width: 100px; height: 100px; margin: 10px; background: #fafafa; border: 1px solid #ddd; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+    .option.selected { background: #5a4fd7; color: white; font-weight: bold; }
+    .button-group { margin-top: 20px; }
+    .button-group button { padding: 10px 30px; background: #a08ef4; color: white; border: none; border-radius: 10px; cursor: pointer; }
+    .selected-info { background: #eef3ff; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 14px; color: #333; }
+    .selected-info p { margin: 0; }
+  </style>
 </head>
-<body>
-    <!-- 진행 바 -->
-    <div class="progress-bar">
-    </div>
 
-    <div class="card">
-      <h2>먹고 싶은 음식을 선택하세요</h2>
-      <div class="random-pick" onclick="randomPick()">
-        🎲 랜덤으로 선택하기
-      </div>
-      <div class="options">
-        <div class="option" onclick="toggleSelect(this, '비빔밥')">비빔밥</div>
-        <div class="option" onclick="toggleSelect(this, '불고기')">불고기</div>
-        <div class="option" onclick="toggleSelect(this, '김치찌개')">김치찌개</div>
-        <div class="option" onclick="toggleSelect(this, '된장찌개')">된장찌개</div>
-        <div class="option" onclick="toggleSelect(this, '삼겹살')">삼겹살</div>
-        <div class="option" onclick="toggleSelect(this, '냉면')">냉면</div>
-      </div>
+<body style="margin:0; background: linear-gradient(to bottom, #e0e7ff, #f9fafb); color: #333;">
 
-      <div class="selected-info">
-        <p>선택한 카테고리: <span id="selected-category">-</span></p>
-      </div>
+<!-- 헤더 추가 -->
+<header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
+  <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
+    <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
+    <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
+  </h1>
+  <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
+</header>
 
-      <div class="button-group">
-        <button onclick="goNext()">다음</button>
-      </div>
-    </div>
+<div style="height:4px; background:#e0e0e0;">
+  <div style="width:75%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
+</div>
 
-    <script>
-        let selectedSubFoods = [];
+<div class="card">
+  <h2>먹고 싶은 음식을 선택하세요</h2>
 
-        // 페이지 로드될 때 카테고리 표시
-        window.onload = function() {
-            const selectedCategory = localStorage.getItem('selectFoods');
-            if (selectedCategory) {
-            document.getElementById('selected-category').innerText = selectedCategory;
-            } else {
-            document.getElementById('selected-category').innerText = '선택되지 않음';
-            }
-        };
+  <div class="random-pick" onclick="randomPick()">🎲 랜덤으로 선택하기</div>
 
-        function toggleSelect(element, foodName) {
-          if (selectedSubFoods.includes(foodName)) {
-            selectedSubFoods = selectedSubFoods.filter(f => f !== foodName);
-            element.classList.remove('selected');
-          } else {
-            selectedSubFoods.push(foodName);
-            element.classList.add('selected');
-          }
-        }
-        
-        function goNext() {
-          if (selectedSubFoods.length === 0) {
-            alert('하나 이상 선택해주세요!');
-            return;
-          }
-          localStorage.setItem('selectedSubFoods', JSON.stringify(selectedSubFoods));
-        location.href = 'select_SubFood.html';
-      }
+  <div class="options">
+    <div class="option" onclick="toggleSelect(this, '비빔밥')">비빔밥</div>
+    <div class="option" onclick="toggleSelect(this, '불고기')">불고기</div>
+    <div class="option" onclick="toggleSelect(this, '김치찌개')">김치찌개</div>
+    <div class="option" onclick="toggleSelect(this, '된장찌개')">된장찌개</div>
+    <div class="option" onclick="toggleSelect(this, '삼겹살')">삼겹살</div>
+    <div class="option" onclick="toggleSelect(this, '냉면')">냉면</div>
+  </div>
 
-    </script>
+  <div class="selected-info">
+    <p>선택한 카테고리: <span id="selected-category">-</span></p>
+  </div>
+
+  <div class="button-group">
+    <button onclick="goNext()">다음</button>
+  </div>
+</div>
+
+<script>
+  let selectedSubFoods = [];
+
+  window.onload = function() {
+    const selectedCategory = localStorage.getItem('selectFoods');
+    if (selectedCategory) {
+      document.getElementById('selected-category').innerText = selectedCategory;
+    } else {
+      document.getElementById('selected-category').innerText = '선택되지 않음';
+    }
+  };
+
+  function toggleSelect(element, foodName) {
+    if (selectedSubFoods.includes(foodName)) {
+      selectedSubFoods = selectedSubFoods.filter(f => f !== foodName);
+      element.classList.remove('selected');
+    } else {
+      selectedSubFoods.push(foodName);
+      element.classList.add('selected');
+    }
+  }
+
+  function randomPick() {
+    const allOptions = document.querySelectorAll('.option');
+    allOptions.forEach(opt => opt.classList.remove('selected'));
+    selectedSubFoods = [];
+
+    const randomIndex = Math.floor(Math.random() * allOptions.length);
+    const randomOption = allOptions[randomIndex];
+    randomOption.classList.add('selected');
+    selectedSubFoods.push(randomOption.textContent);
+  }
+
+  function goNext() {
+    if (selectedSubFoods.length === 0) {
+      alert('하나 이상 선택해주세요!');
+      return;
+    }
+    localStorage.setItem('selectedSubFoods', JSON.stringify(selectedSubFoods));
+    window.location.href = 'result.html';
+  }
+
+  // 메인으로 버튼 눌렀을 때 main-home.html로 이동
+  document.getElementById('btnHome').onclick = (e) => {
+    e.preventDefault();
+    window.location.href = 'main-home.html';
+  };
+</script>
 
 </body>
 </html>
