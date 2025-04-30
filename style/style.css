@@ -402,7 +402,7 @@
   .blue-btn { background-color: #D3EEFF; color: #1E90FF; }
   .orange-btn { background-color: #FFE3C2; color: #FF7F00; }
 
-  /* 추천 카드 (메인 3개 카드) */
+  /* 추천 카드 (메인화면에 있는 3개 카드) */
 .recommend-card {
     background: white;
     border-radius: 12px;
