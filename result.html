@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>휙떠나 - 맞춤 여행 추천</title>
   <link rel="stylesheet" href="style/style.css">
+  <!-- html2canvas 라이브러리 추가 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
   <script>
     const API_KEY = 'YOUR_API_KEY_HERE';
 
@@ -29,26 +31,35 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
     }
 
     async function fetchRecommendation(prompt) {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.7
-        })
-      });
+      // 로딩 상태 표시
+      const resultDiv = document.getElementById('recommendation-result');
+      resultDiv.innerHTML = "<div class='loading'>여행 일정을 준비하고 있습니다...</div>";
+      
+      try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.7
+          })
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Error ${response.status}: ${errorData.error.message}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Error ${response.status}: ${errorData.error.message}`);
+        }
+
+        const data = await response.json();
+        return data.choices[0].message.content.trim();
+      } catch (err) {
+        console.error(err);
+        throw err;
       }
-
-      const data = await response.json();
-      return data.choices[0].message.content.trim();
     }
 
     function renderCards(recommendation) {
@@ -67,10 +78,116 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
         card.className = 'day-card';
         card.innerHTML = `
           <h3>Day ${index + 1}</h3>
-          <p>${dayText.replace(/Day ?\d+/, '').trim()}</p>
+          <p>${dayText.replace(/Day ?\d+/, '').trim().replace(/\n/g, '<br>')}</p>
         `;
         resultDiv.appendChild(card);
       });
+    }
+
+    // 새로운 추천 요청 함수
+    async function regenerateRecommendation() {
+      const travelType = localStorage.getItem('recommendType') || 'random';
+      const travelDays = parseInt(localStorage.getItem('selectedDays')) || 1;
+
+      let category = '-';
+      let subcategories = [];
+
+      if (travelType === 'food') {
+        const stored = JSON.parse(localStorage.getItem('selectedFoods'));
+        const subStored = JSON.parse(localStorage.getItem('selectedSubFoods'));
+        category = stored && stored.length > 0 ? stored[0] : '식도락';
+        subcategories = subStored || [];
+      } else if (travelType === 'area') {
+        const regionMap = {
+          "gapyeong-yangpyeong": "가평·양평",
+          "gangneung-sokcho": "강릉·속초",
+          "gyeongju": "경주",
+          "busan": "부산",
+          "yeosu": "여수",
+          "incheon": "인천",
+          "jeonju": "전주",
+          "jeju": "제주",
+          "chuncheon-hongcheon": "춘천·홍천",
+          "taean": "태안",
+          "tongyeong-geoje-namhae": "통영·거제·남해",
+          "pohang-andong": "포항·안동"
+        };
+        const selectedRegion = localStorage.getItem('selectedRegion');
+        category = regionMap[selectedRegion] || '선택 지역';
+        subcategories = [category];
+      } else {
+        category = '랜덤';
+        subcategories = ['무작위 추천'];
+      }
+
+      const prompt = generatePrompt(travelType, travelDays, category, subcategories);
+      
+      try {
+        // 재생성 버튼 비활성화
+        document.getElementById('btnRegenerate').disabled = true;
+        document.getElementById('btnRegenerate').innerText = '추천 중...';
+        
+        const recommendation = await fetchRecommendation(prompt);
+        renderCards(recommendation);
+      } catch (err) {
+        document.getElementById('recommendation-result').innerHTML = 
+          '<div class="error-message">추천을 가져오는데 실패했습니다. 다시 시도해주세요.</div>';
+      } finally {
+        // 재생성 버튼 다시 활성화
+        document.getElementById('btnRegenerate').disabled = false;
+        document.getElementById('btnRegenerate').innerText = '일정 다시 만들기';
+      }
+    }
+
+    // 현재 화면을 이미지로 저장하는 함수
+    function saveAsImage() {
+      // 저장 중임을 표시
+      const saveBtn = document.getElementById('btnSave');
+      const originalText = saveBtn.innerText;
+      saveBtn.disabled = true;
+      saveBtn.innerText = '저장 중...';
+      
+      // 저장할 컨테이너 요소 지정
+      const container = document.querySelector('.container');
+      
+      html2canvas(container).then(canvas => {
+        // 캔버스를 이미지 URL로 변환
+        const imgData = canvas.toDataURL('image/jpeg', 0.9);
+        
+        // 다운로드 링크 생성
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = '휙떠나_여행일정_' + new Date().toISOString().slice(0, 10) + '.jpg';
+        link.click();
+        
+        // 버튼 상태 복원
+        saveBtn.disabled = false;
+        saveBtn.innerText = originalText;
+      }).catch(err => {
+        console.error('이미지 저장 중 오류 발생:', err);
+        saveBtn.disabled = false;
+        saveBtn.innerText = originalText;
+        alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
+      });
+    }
+
+    // 공유하기 함수
+    function shareItinerary() {
+      // 간단한 공유 기능 구현 (현재 URL을 클립보드에 복사)
+      const shareBtn = document.getElementById('btnShare');
+      const originalText = shareBtn.innerText;
+      
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+          shareBtn.innerText = '복사됨!';
+          setTimeout(() => {
+            shareBtn.innerText = originalText;
+          }, 2000);
+        })
+        .catch(err => {
+          console.error('클립보드 복사 실패:', err);
+          alert('URL 복사에 실패했습니다. 직접 복사해 주세요.');
+        });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -118,8 +235,14 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
         .then(recommendation => renderCards(recommendation))
         .catch(err => {
           console.error(err);
-          document.getElementById('recommendation-result').innerText = '추천을 가져오는데 실패했습니다.';
+          document.getElementById('recommendation-result').innerHTML = 
+            '<div class="error-message">추천을 가져오는데 실패했습니다. 다시 시도해주세요.</div>';
         });
+      
+      // 버튼에 이벤트 리스너 연결
+      document.getElementById('btnRegenerate').addEventListener('click', regenerateRecommendation);
+      document.getElementById('btnSave').addEventListener('click', saveAsImage);
+      document.getElementById('btnShare').addEventListener('click', shareItinerary);
     });
   </script>
   <style>
@@ -240,11 +363,11 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
       display: flex;
       justify-content: center;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
-<<<<<<< HEAD
     .buttons button {
-      background-color: #4f46e5;
+      background-color: #2196f3;
       color: white;
       border: none;
       padding: 10px 20px;
@@ -258,120 +381,10 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
       background-color: #4338ca;
     }
   </style>
-=======
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .buttons button {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.3s;
-  }
-
-  .buttons button:hover {
-    background-color: #4338ca;
-  }
-
-  .day-card p {
-  white-space: pre-wrap;
-  line-height: 1.7;
-}
-
-.day-card {
-  min-width: 250px;
-  max-width: 280px;
-}
-    
-  </style>  
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 3b88256 (refacor#1)
-=======
->>>>>>> 3b88256 (refacor#1)
-=======
->>>>>>> 3b88256 (refacor#1)
 </head>
 
 <body>
-  <!-- 헤더 -->
-  <header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
-    <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
-      <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
-      <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
-    </h1>
-    <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
-  </header>
-
-<<<<<<< HEAD
-  <!-- 진행 바 -->
-  <div style="height:4px; background:#e0e0e0;">
-    <div class="progress" style="width:75%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
-  </div>
-
-  <!-- 추천 결과 영역 -->
-  <div class="container">
-    <div class="header">맞춤 여행 일정 추천</div>
-
-    <div class="subtitle">
-      <div>서울 여행</div>
-      <small>선택한 랜드마크: 경복궁, 남산타워, 명동거리 | 선택한 음식: 비빔밥, 불고기</small>
-    </div>
-
-    <div class="days">
-      <div class="day-card">
-        <h3>Day 1</h3>
-        <ul>
-          <li><strong>방문 장소:</strong> 경복궁, 북촌한옥마을</li>
-          <li><strong>추천 음식:</strong> 비빔밥</li>
-        </ul>
-      </div>
-      <div class="day-card">
-        <h3>Day 2</h3>
-        <ul>
-          <li><strong>방문 장소:</strong> 남산타워, 명동</li>
-          <li><strong>추천 음식:</strong> 불고기</li>
-        </ul>
-      </div>
-      <div class="day-card">
-        <h3>Day 3</h3>
-        <ul>
-          <li><strong>방문 장소:</strong> 한강공원, 인사동</li>
-          <li><strong>추천 음식:</strong> 전시회카페</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="tip-box">
-      <p>🌟 관광지는 하루 목표치의 환경이나 날씨 상황에 맞춰 조정하세요.<br>
-         🌟 날씨가 좋은 날에 야외 방문을 추천합니다.<br>
-         🌟 추천 여행 플랜은 자유롭게 여유 있게!</p>
-    </div>
-
-    <div class="buttons">
-      <button>공유하기</button>
-      <button>일정 다시 만들기</button>
-      <button>저장하기</button>
-    </div>
-  </div>
-
-  <script>
-    // 메인으로 이동
-    document.getElementById('btnHome').onclick = (e) => {
-      e.preventDefault();
-      window.location.href = 'main-home.html';
-    };
-  </script>
-=======
-<!-- 헤더 추가 -->
+<!-- 헤더 -->
 <header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
   <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
     <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
@@ -380,12 +393,14 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
   <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
 </header>
 
+<!-- 진행 바 -->
 <div style="height:4px; background:#e0e0e0;">
   <div class="progress" style="width:75%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
 </div>
 
+<!-- 추천 결과 영역 -->
 <div class="container">
-  <div class="header" >맞춤 여행 일정 추천</div>
+  <div class="header">맞춤 여행 일정 추천</div>
 
   <div class="subtitle" id="summary-text"></div>
   <div class="days" id="recommendation-result"></div>
@@ -397,19 +412,18 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
 </div>
 
 <div class="buttons">
-  <button>공유하기</button>
-  <button>일정 다시 만들기</button>
-  <button>저장하기</button>
+  <button id="btnShare">공유하기</button>
+  <button id="btnRegenerate">일정 다시 만들기</button>
+  <button id="btnSave">저장하기</button>
 </div>  
 
 <script>
-//  메인으로 버튼 클릭 시 main-home.html로 이동
+// 메인으로 버튼 클릭 시 main-home.html로 이동
 document.getElementById('btnHome').onclick = (e) => {
   e.preventDefault();
   window.location.href = 'main-home.html';
 };
 </script>
 
->>>>>>> 3b88256 (refacor#1)
 </body>
 </html>

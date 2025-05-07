@@ -9,20 +9,22 @@
 <body>
 
   <!-- 헤더 + 진행바 -->
-  <header class="header">
-    <h1 class="logo">
-      <span class="logo-text">휙떠나</span>
-      <span class="beta-badge">베타</span>
+  <header class="header" style="display:flex; justify-content:space-between; align-items:center; padding: 16px 32px; background:#fff;">
+    <h1 class="logo" style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
+      <span class="logo-text" style="background:linear-gradient(90deg,#4e54c8,#ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
+      <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
     </h1>
-    <div class="progress-container">
-      <div class="progress-bar" style="width:75%;"></div>
-    </div>
+    <a href="main-home.html" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
   </header>
+
+  <div class="progress-container">
+    <div class="progress-bar" style="width:75%; height:4px; background:#2196f3;"></div>
+  </div>
 
   <main class="container">
     <form class="region-form">
 
-      <!-- 뒤로가기 -->
+      <!-- 네비게이션 -->
       <div class="form-nav">
         <button type="button" class="btn btn-back">← 이전</button>
       </div>
@@ -30,17 +32,17 @@
       <!-- 타이틀 -->
       <h2 class="form-title" id="subregion-title">세부 지역을 선택하세요</h2>
 
-      <!-- 선택 정보 박스 -->
-      <div class="info-box">
-        <p>여행 일수: <strong id="days-info">-</strong></p>
-        <p>선택한 지역: <strong id="chosen-region">-</strong></p>
-        <p>선택한 세부 지역: <strong id="chosen-subregion">선택해주세요</strong></p>
-      </div>
-
       <!-- 옵션 그리드 -->
       <fieldset class="selection-grid" id="subregion-grid">
         <legend class="visually-hidden">세부 지역 선택</legend>
       </fieldset>
+
+      <!-- 선택 정보 박스 (아래로 이동됨) -->
+      <div class="info-box" style="margin-top: 20px;">
+        <p>여행 일수: <strong id="days-info">-</strong></p>
+        <p>선택한 지역: <strong id="chosen-region">-</strong></p>
+        <p>선택한 세부 지역: <strong id="chosen-subregion">선택해주세요</strong></p>
+      </div>
 
       <!-- 추천 받기 버튼 -->
       <button type="submit" class="btn btn-primary btn-next">추천 받기</button>
@@ -58,17 +60,16 @@
       const CHOSEN_REG  = document.getElementById('chosen-region');
       const CHOSEN_SUB  = document.getElementById('chosen-subregion');
 
-      // 1) 여행 일수 읽어서 표시
+      const regionCode = localStorage.getItem('selectedRegion');
+      const regionName = localStorage.getItem('selectedRegionName');
+
+      // 여행 일수 표시
       const days = localStorage.getItem('selectedDays');
       DAYS_EL.textContent = days ? `${days}일` : '-';
 
-      // 2) 상위 region 정보 읽어오기
-      const regionCode = localStorage.getItem('selectedRegion');
-      const regionName = localStorage.getItem('selectedRegionName');
       CHOSEN_REG.textContent = regionName || '-';
-      TITLE_EL.textContent   = `${regionName || '여행 지역'}에서 가고 싶은 곳을 선택하세요`;
+      TITLE_EL.textContent = `${regionName || '여행 지역'}에서 가고 싶은 곳을 선택하세요`;
 
-      // 3) 세부 지역 매핑
       const subregions = {
         'gapyeong-yangpyeong': [
           { value: 'namiseom',      label: '남이섬' },
@@ -149,7 +150,6 @@
         ]
       };
 
-      // 4) 그리드에 옵션 생성
       (subregions[regionCode] || []).forEach(({ value, label }) => {
         const lbl = document.createElement('label');
         lbl.className = 'selection-option';
@@ -160,20 +160,38 @@
         GRID.appendChild(lbl);
       });
 
-      // 5) 선택 시 UI 업데이트
       GRID.addEventListener('change', e => {
         if (e.target.name === 'subregion') {
-          CHOSEN_SUB.textContent = e.target.closest('label').querySelector('span').textContent;
+          // 버튼 강조 스타일
+          document.querySelectorAll('.selection-option').forEach(label => {
+            label.style.border = '1px solid #ccc';
+            label.style.background = 'white';
+            label.style.color = 'inherit';
+            label.style.fontWeight = 'normal';
+            label.style.borderRadius = '8px';
+          });
+
+          const label = e.target.closest('label');
+          label.style.background = '#5e4fdb';
+          label.style.color = 'white';
+          label.style.fontWeight = 'bold';
+          label.style.border = 'none';
+          label.style.borderRadius = '12px';
+
+          CHOSEN_SUB.textContent = label.querySelector('span').textContent;
         }
       });
 
       // 뒤로가기
       BACK_BTN.addEventListener('click', e => {
         e.preventDefault();
-        history.back();
+        localStorage.removeItem('selectedRegion');
+        localStorage.removeItem('selectedRegionName');
+        localStorage.removeItem('selectedSubregion');
+        localStorage.removeItem('selectedSubregionName');
+        location.replace('region.html');
       });
 
-      // 제출 → 결과 페이지로 이동
       FORM.addEventListener('submit', e => {
         e.preventDefault();
         const sel = FORM.querySelector('input[name="subregion"]:checked');

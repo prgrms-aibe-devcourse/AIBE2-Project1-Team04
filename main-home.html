@@ -1,4 +1,3 @@
-<!-- ===== main-home.html ===== -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,48 +5,245 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>휙떠나</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Malgun Gothic', sans-serif; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; }
   body { background: #f0f2f5; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  
+  /* 헤더 스타일 - 그라데이션 유지 */
   header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
-  .logo { display: flex; align-items: center; font-weight: 800; font-size: 24px; background: linear-gradient(to right, #4776f6, #A366FF); -webkit-background-clip: text; color: transparent; }
-  .beta-badge { background-color: #a8d0ff; color: #1e6bff; font-size: 12px; padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
-  .login-btn { color: #4776f6; text-decoration: none; font-size: 14px; }
-  .main-card { background: #fff; border-radius: 12px; padding: 40px 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-  .main-card-content { position: relative; z-index: 2; }
-  .main-card h2 { font-size: 36px; margin-bottom: 20px; font-weight: 900; letter-spacing: -1px; }
-  .gradient-text { background: linear-gradient(to right, #4776f6, #A366FF); -webkit-background-clip: text; color: transparent; font-weight: 900; font-size: 36px; letter-spacing: -1px; }
-  .normal-text { color: #000; font-weight: 900; font-size: 36px; letter-spacing: -1px; }
-  .main-card p { color: #666; margin-bottom: 30px; font-size: 15px; }
-  .card-container { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
-  .card { background: white; border-radius: 12px; overflow: hidden; flex: 1; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-  .card-header { padding: 30px 0; text-align: center; }
-  .icon { font-size: 50px; color: white; }
+  .logo { 
+    display: flex; 
+    align-items: center; 
+    font-weight: 700;
+    font-size: 24px; 
+    background: linear-gradient(to right, #4776f6, #A366FF); 
+    -webkit-background-clip: text; 
+    color: transparent;
+  }
+  .beta-badge { 
+    background-color: #a8d0ff; 
+    color: #1e6bff; 
+    font-size: 12px; 
+    padding: 2px 8px; 
+    border-radius: 20px; 
+    margin-left: 8px;
+    font-weight: 500; 
+  }
+  .login-btn { color: #4776f6; text-decoration: none; font-size: 14px; font-weight: 500; }
+
+  /* 메인 카드 스타일 */
+  .main-card { 
+    background: #fff; 
+    border-radius: 12px; 
+    padding: 40px 20px; 
+    text-align: center; 
+    margin-bottom: 30px; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    position: relative; 
+    overflow: hidden; 
+  }
+  
+  /* 배경 이미지 - 투명도 조절 */
+  .main-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("img/1686458936.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .main-card-content { 
+    position: relative; 
+    z-index: 2;
+  }
+  
+  /* 타이틀 스타일 - 두께만 조정 */
+  .main-card h2 { 
+    font-size: 36px; 
+    margin-bottom: 20px; 
+    font-weight: 700; /* 볼드 정도 조정 */
+    letter-spacing: -1px;
+  }
+  
+  /* 그라데이션 텍스트 - 그라데이션 유지 */
+  .gradient-text { 
+    background: linear-gradient(to right, #4776f6, #A366FF); 
+    -webkit-background-clip: text; 
+    color: transparent; 
+    font-weight: 700; 
+    font-size: 36px; 
+    letter-spacing: -1px; 
+  }
+  
+  .normal-text { 
+    color: #000; 
+    font-weight: 700; 
+    font-size: 36px; 
+    letter-spacing: -1px; 
+  }
+  
+  /* 설명 텍스트 */
+  .main-card p { 
+    color: #666; 
+    margin-bottom: 30px; 
+    font-size: 15px;
+    font-weight: 400; /* 일반 두께로 변경 */
+    line-height: 1.5;
+  }
+  
+  /* 버튼 스타일 */
+  .start-btn { 
+    background-color: #4776f6; 
+    color: white; 
+    border: none; 
+    padding: 12px 24px; 
+    border-radius: 6px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    font-weight: 500; /* 이미지에 맞게 조정 */
+  }
+  .start-btn:hover { 
+    background-color: #3a63d2; 
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  /* 섹션 타이틀 */
+  .section-title { 
+    text-align: center; 
+    margin: 30px 0; 
+    font-size: 18px; 
+    font-weight: 600; 
+    color: #333;
+  }
+  
+  /* 카드 컨테이너 */
+  .card-container { 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 20px; 
+    margin-bottom: 30px; 
+  }
+  
+  /* 카드 스타일 */
+  .card { 
+    background: white; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    flex: 1; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+  }
+  
+  .card-header { 
+    padding: 30px 0; 
+    text-align: center; 
+  }
+
+  /* 그라데이션 색상 유지 */
   .purple-bg { background: linear-gradient(to right, #A366FF, #D3B3FF); }
   .blue-bg { background: linear-gradient(to right, #32A4F0, #A9DCFF); }
   .orange-bg { background: linear-gradient(to right, #FF8833, #FFD0A6); }
-  .card-body { padding: 20px; text-align: center; }
-  .card-body h3 { font-size: 16px; margin-bottom: 10px; font-weight: 600; }
-  .card-body p { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
-  .card-btn { margin: 0 20px 20px 20px; padding: 10px; text-align: center; border-radius: 8px; font-weight: 600; font-size: 14px; display: block; text-decoration: none; }
+
+  /* 카드 본문 스타일 */
+  .card-body { 
+    padding: 20px; 
+    text-align: center; 
+  }
+  
+  .card-body h3 ,
+  .feature h3 { 
+    font-size: 16px; 
+    margin-bottom: 10px; 
+    font-weight: 600; 
+    color: #333;
+  }
+  
+  .card-body p ,
+  .feature p { 
+    color: #666; 
+    font-size: 14px; 
+    margin-bottom: 20px; 
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  /* 추천 버튼 스타일 - 파스텔톤 유지 */
+  .card-btn { 
+    margin: 0 20px 20px 20px; 
+    padding: 10px; 
+    text-align: center; 
+    border-radius: 8px; 
+    font-weight: 500; /* 두께 조정 */
+    font-size: 14px; 
+    display: block; 
+    text-decoration: none; 
+  }
+  
   .purple-btn { background-color: #E5D6FF; color: #7B47FF; }
   .blue-btn { background-color: #D3EEFF; color: #1E90FF; }
   .orange-btn { background-color: #FFE3C2; color: #FF7F00; }
-  .features-card { background: white; border-radius: 12px; padding: 30px 20px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-  .features-title { text-align: center; margin-bottom: 30px; font-size: 18px; font-weight: 600; }
-  .features-container { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 20px; }
-  .feature { flex: 1; min-width: 200px; }
-  .feature .icon { font-size: 40px; color: #666; margin-bottom: 15px; }
+
+  /* 특별한 기능 섹션 */
+  .features-card { 
+    background: white; 
+    border-radius: 12px; 
+    padding: 30px 20px; 
+    margin-bottom: 30px; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+  }
+  
+  .features-title { 
+    text-align: center; 
+    margin-bottom: 30px; 
+    font-size: 18px; 
+    font-weight: 600; 
+    color: #333;
+  }
+  
+  .features-container { 
+    display: flex; 
+    justify-content: space-around; 
+    text-align: center; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+  }
+  
+  .feature { 
+    flex: 1; 
+    min-width: 200px; 
+  }
+  
+  /* .feature h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  } */
+  
+  .feature p {
+    color: #666;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
 </style>
 </head>
-
 <body>
 <div class="container">
 <header>
   <div class="logo">휙떠나<span class="beta-badge">베타</span></div>
   <a href="#" class="login-btn">메인으로</a>
 </header>
-
 <main>
 <section class="main-card">
   <div class="main-card-content">
@@ -59,53 +255,52 @@
 <h2 class="section-title">추천 방식을 선택하세요</h2>
 
 <section class="card-container">
-  <div class="card">
-    <div class="card-header purple-bg"><div class="icon">🎲</div></div>
-    <div class="card-body">
-      <h3>완전 랜덤 추천</h3>
-      <p>일정만 입력하면 완전히 랜덤한 여행지를 추천해드립니다.</p>
+    <div class="card">
+      <div class="card-header purple-bg"><div class="icon">🎲</div></div>
+      <div class="card-body">
+        <h3>완전 랜덤 추천</h3>
+        <p>일정만 입력하면 완전히 랜덤한 여행지를 추천해드립니다.</p>
+      </div>
+      <a href="#" class="card-btn purple-btn" onclick="goToDays('random', 'result.html')">랜덤 추천 받기</a>
     </div>
-    <a href="#" class="card-btn purple-btn" onclick="goToDays('random', 'result.html')">랜덤 추천 받기</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header blue-bg"><div class="icon">🗺️</div></div>
-    <div class="card-body">
-      <h3>기간/지역 기반 추천</h3>
-      <p>여행 일정과 선호하는 지역, 랜드마크를 선택해 추천합니다.</p>
+  
+    <div class="card">
+      <div class="card-header blue-bg"><div class="icon">🗺️</div></div>
+      <div class="card-body">
+        <h3>기간/지역 기반 추천</h3>
+        <p>여행 일정과 선호하는 지역, 랜드마크를 선택해 추천합니다.</p>
+      </div>
+      <a href="#" class="card-btn blue-btn" onclick="goToDays('area', 'region.html')">지역 기반 추천 받기</a>
     </div>
-    <a href="#" class="card-btn blue-btn" onclick="goToDays('area', 'region.html')">지역 기반 추천 받기</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header orange-bg"><div class="icon">🍴</div></div>
-    <div class="card-body">
-      <h3>식도락 여행 추천</h3>
-      <p>좋아하는 음식 종류를 선택하면 맛있는 여행지를 추천해드립니다.</p>
+  
+    <div class="card">
+      <div class="card-header orange-bg"><div class="icon">🍴</div></div>
+      <div class="card-body">
+        <h3>식도락 여행 추천</h3>
+        <p>좋아하는 음식 종류를 선택하면 맛있는 여행지를 추천해드립니다.</p>
+      </div>
+      <a href="#" class="card-btn orange-btn" onclick="goToDays('food', 'select_Mainfood.html')">식도락 추천 받기</a>
     </div>
-    <a href="#" class="card-btn orange-btn" onclick="goToDays('food', 'select_Mainfood.html')">식도락 추천 받기</a>
-  </div>
-</section>
-
-<section class="features-card">
-  <h2 class="features-title">휙떠나의 특별한 기능</h2>
-  <div class="features-container">
-    <div class="feature"><div class="icon">⚡</div><h3>빠른 추천</h3><p>몇 가지 질문에 답하면 즉시 맞춤형 여행지를 추천해드립니다.</p></div>
-    <div class="feature"><div class="icon">🎯</div><h3>맞춤형 제안</h3><p>취향과 일정에 맞는 최적의 여행지와 관광 명소를 제안합니다.</p></div>
-    <div class="feature"><div class="icon">🍔</div><h3>맛집 정보</h3><p>여행지의 유명한 맛집과 특색있는 음식 정보를 함께 제공합니다.</p></div>
-  </div>
-</section>
+  </section>
+  
+  <section class="features-card">
+    <h2 class="features-title">휙떠나의 특별한 기능</h2>
+    <div class="features-container">
+      <div class="feature"><div class="icon">⚡</div><h3>빠른 추천</h3><p>몇 가지 질문에 답하면 즉시 맞춤형 여행지를 추천해드립니다.</p></div>
+      <div class="feature"><div class="icon">🎯</div><h3>맞춤형 제안</h3><p>취향과 일정에 맞는 최적의 여행지와 관광 명소를 제안합니다.</p></div>
+      <div class="feature"><div class="icon">🍔</div><h3>맛집 정보</h3><p>여행지의 유명한 맛집과 특색있는 음식 정보를 함께 제공합니다.</p></div>
+    </div>
+  </section>
 </main>
 </div>
-
 <!-- 스크립트: 추천 방식 및 다음 경로 저장 -->
 <script>
-function goToDays(type, nextPage) {
-  localStorage.setItem('recommendType', type);     // 'random', 'area', 'food'
-  localStorage.setItem('nextPage', nextPage);      // 'result.html' 등
-  window.location.href = 'days.html';
-}
-</script>
+    function goToDays(type, nextPage) {
+      localStorage.setItem('recommendType', type);     // 'random', 'area', 'food'
+      localStorage.setItem('nextPage', nextPage);      // 'result.html' 등
+      window.location.href = 'days.html';
+    }
+    </script>
 
 </body>
 </html>
