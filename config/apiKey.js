@@ -1,1 +1,1 @@
-const SPOON_API_KEY = "f18966ca255649f4a50e3062da86b4e3";
+const SPOON_API_KEY = "";
