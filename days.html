@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>휙떠나 - 여행 일수 선택</title>
+  <link rel="stylesheet" href="style/style.css">
 </head>
 
 <body style="margin:0; font-family:Arial, sans-serif; background:#f4f7fc; color:#333;">
 
-<!-- 헤더 + 진행바 -->
-<header style="display:flex; flex-direction:column; align-items:stretch; background:#fff; padding:16px 32px;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
-        <span style="background:linear-gradient(90deg,#4e54c8,#ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
-        <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
-      </h1>
-      <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
-    </div>
-    <div style="height:4px; background:#e0e0e0; margin-top:16px;">
-      <div id="progress" style="width:25%; height:100%; background:#2196f3; transition:width .3s ease;"></div>
-    </div>
-  </header>
+<!-- 헤더 -->
+<header style="background:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
+  <h1 style="font-size:1.8rem; font-weight:bold; margin:0; display:flex; align-items:center;">
+    <span style="background:linear-gradient(90deg, #4e54c8, #ec407a); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">휙떠나</span>
+    <small style="font-size:0.75rem; background:#d1e8ff; color:#2196f3; padding:2px 6px; border-radius:4px; margin-left:8px;">베타</small>
+  </h1>
+  <a id="btnHome" href="#" style="text-decoration:none; color:#333; font-weight:bold;">메인으로</a>
+</header>
+
+<div style="height:4px; background:#e0e0e0;">
+  <div id="progress" style="width:25%; height:100%; background:#2196f3; transition:width 0.3s;"></div>
+</div>
 
 <!-- 본문 -->
 <div style="display:flex; justify-content:center; padding:0 16px; margin-top:24px;">
