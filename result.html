@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>휙떠나 - 맞춤 여행 추천</title>
   <link rel="stylesheet" href="style/style.css">
+  <script src="config/apiKey.js"></script>
   <!-- html2canvas 라이브러리 추가 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
   <script>
     const API_KEY = 'YOUR_API_KEY_HERE';
+    const KAKAO_API_KEY = "kakao_api_key_here"; // 카카오톡 API 키
 
     function generatePrompt(travelType, travelDays, category, subcategories) {
       return `
@@ -171,26 +173,31 @@ ${travelDays}박 ${travelDays + 1}일 동안 ${travelType === 'food' ? '식도�
       });
     }
 
-    // 공유하기 함수
-    function shareItinerary() {
-      // 간단한 공유 기능 구현 (현재 URL을 클립보드에 복사)
-      const shareBtn = document.getElementById('btnShare');
-      const originalText = shareBtn.innerText;
-      
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => {
-          shareBtn.innerText = '복사됨!';
-          setTimeout(() => {
-            shareBtn.innerText = originalText;
-          }, 2000);
-        })
-        .catch(err => {
-          console.error('클립보드 복사 실패:', err);
-          alert('URL 복사에 실패했습니다. 직접 복사해 주세요.');
-        });
+    // 카카오톡으로 공유하기 함수
+    function shareToKakao() {
+      let textToShare = '';
+      document.querySelectorAll('.day-card').forEach(card => {
+        const title = card.querySelector('h3').innerText;
+        // p 태그의 innerHTML을 텍스트로 변환하여 <br>을 줄바꿈으로 대체
+        const content = card.querySelector('p')?.innerHTML.replace(/<br>/g, '\n') || '';
+        textToShare += `${title}\n${content}\n\n`;
+      });
+
+      Kakao.Link.sendDefault({
+        objectType: 'text',
+        text: textToShare.trim(),
+        link: {
+          mobileWebUrl: location.href,
+          webUrl: location.href
+        },
+        buttonTitle: '여행 일정 보러가기'
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // 카카오 SDK 초기화
+      Kakao.init(KAKAO_API_KEY);
+
       const travelType = localStorage.getItem('recommendType') || 'random';
       const travelDays = parseInt(localStorage.getItem('selectedDays')) || 1;
 
